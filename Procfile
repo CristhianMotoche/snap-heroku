@@ -1,1 +1,1 @@
-web: cabal run -- -p 
+web: cabal run -- -p $PORT
