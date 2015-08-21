@@ -24,6 +24,7 @@ import           Heist
 import qualified Heist.Interpreted as I
 ------------------------------------------------------------------------------
 import           Application
+import           Web.Person
 
 
 ------------------------------------------------------------------------------
@@ -66,6 +67,7 @@ routes :: [(ByteString, Handler App App ())]
 routes = [ ("/login",    with auth handleLoginSubmit)
          , ("/logout",   with auth handleLogout)
          , ("/new_user", with auth handleNewUser)
+         , ("/person", personHandler)
          , ("",          serveDirectory "static")
          ]
 
@@ -74,6 +76,8 @@ routes = [ ("/login",    with auth handleLoginSubmit)
 -- | The application initializer.
 app :: SnapletInit App App
 app = makeSnaplet "app" "An snaplet example application." Nothing $ do
+    -- d <- nestSnaplet "db" db pgsInit
+    -- a <- nestSnaplet "auth" auth $ initPostgresAuth sess d
     h <- nestSnaplet "" heist $ heistInit "templates"
     s <- nestSnaplet "sess" sess $
            initCookieSessionManager "site_key.txt" "sess" (Just 3600)
