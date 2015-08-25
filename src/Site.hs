@@ -11,7 +11,6 @@ module Site
 ------------------------------------------------------------------------------
 import           Control.Applicative
 import           Data.ByteString (ByteString)
-import           Data.Monoid
 import qualified Data.Text as T
 import           Snap.Core
 import           Snap.Snaplet
@@ -21,12 +20,19 @@ import           Snap.Snaplet.Heist
 import           Snap.Snaplet.Session.Backends.CookieSession
 import           Snap.Util.FileServe
 import           Heist
+import           Snap.Snaplet.PostgresqlSimple (pgsInit)
 import qualified Heist.Interpreted as I
 ------------------------------------------------------------------------------
 import           Application
-import           Web.Person
+import           Web.Person.Person
+import           Web.Person.Internal.Handlers
+------------------------------------------------------------------------------
 
+ifTopGet :: Handler App App a -> Handler App App a
+ifTopGet = ifTop . method GET
 
+ifTopPost :: Handler App App a -> Handler App App a
+ifTopPost = ifTop . method POST
 ------------------------------------------------------------------------------
 -- | Render login form
 handleLogin :: Maybe T.Text -> Handler App (AuthManager App) ()
@@ -67,7 +73,8 @@ routes :: [(ByteString, Handler App App ())]
 routes = [ ("/login",    with auth handleLoginSubmit)
          , ("/logout",   with auth handleLogout)
          , ("/new_user", with auth handleNewUser)
-         , ("/person", personHandler)
+         , ("/person", ifTopPost $ createPersonHandler)
+         , ("/person/:id", ifTopGet $ viewPersonHandler)
          , ("",          serveDirectory "static")
          ]
 
@@ -76,8 +83,6 @@ routes = [ ("/login",    with auth handleLoginSubmit)
 -- | The application initializer.
 app :: SnapletInit App App
 app = makeSnaplet "app" "An snaplet example application." Nothing $ do
-    -- d <- nestSnaplet "db" db pgsInit
-    -- a <- nestSnaplet "auth" auth $ initPostgresAuth sess d
     h <- nestSnaplet "" heist $ heistInit "templates"
     s <- nestSnaplet "sess" sess $
            initCookieSessionManager "site_key.txt" "sess" (Just 3600)
@@ -87,7 +92,10 @@ app = makeSnaplet "app" "An snaplet example application." Nothing $ do
     -- you'll probably want to change this to a more robust auth backend.
     a <- nestSnaplet "auth" auth $
            initJsonFileAuthManager defAuthSettings sess "users.json"
+    d <- nestSnaplet "db" db pgsInit
+
     addRoutes routes
     addAuthSplices h auth
-    return $ App h s a
+
+    return $ App h s a d
 
