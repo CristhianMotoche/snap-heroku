@@ -3,7 +3,7 @@
 module Data.Person.Internal.Queries where
 
 ------------------------------------------------------------------------------
-import        Database.PostgresSQL.Simple (Query)
+import        Database.PostgreSQL.Simple (Query)
 ------------------------------------------------------------------------------
 
 selectPersonQuery :: Query

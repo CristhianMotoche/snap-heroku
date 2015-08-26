@@ -28,12 +28,6 @@ import           Web.Person.Person
 import           Web.Person.Internal.Handlers
 ------------------------------------------------------------------------------
 
-ifTopGet :: Handler App App a -> Handler App App a
-ifTopGet = ifTop . method GET
-
-ifTopPost :: Handler App App a -> Handler App App a
-ifTopPost = ifTop . method POST
-------------------------------------------------------------------------------
 -- | Render login form
 handleLogin :: Maybe T.Text -> Handler App (AuthManager App) ()
 handleLogin authError = heistLocal (I.bindSplices errs) $ render "login"

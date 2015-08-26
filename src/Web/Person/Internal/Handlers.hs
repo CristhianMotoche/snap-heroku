@@ -6,11 +6,12 @@ module Web.Person.Internal.Handlers
   ) where
 
 
+------------------------------------------------------------------------------
 import Application
 import Data.Person.Persistence
 import Data.Person.Types
-import Web.Person.Internal.Handlers
-import Web.Person.Person
+import Web.Internal.Handlers
+------------------------------------------------------------------------------
 
 -- import qualified Data.Text as T
 -- import qualified Data.ByteString as BS
@@ -18,6 +19,8 @@ import Web.Person.Person
 
 -- import Control.Monad (liftM)
 import Snap.Core (getRequest, rqQueryString, writeBS)
+import Snap.Snaplet
+------------------------------------------------------------------------------
 -- import Snap.Extras.CoreUtils
 -- import Snap.Extras.JSON
 -- import Crypto.Hash.SHA256 (hash)
@@ -36,7 +39,7 @@ createHandler = writeBS "Hello POST"
 
 showHandler :: Handler App App ()
 showHandler = ifTopGet $ do
---  request <- getRequest
+  request <- getRequest
 --  devices <- findDevicesByToken $ T.pack (drop 8 $ U8.toString (rqQueryString request))
 --  statuses <- mapM getDeviceLastStatus devices
 --  writeSingletonJSON "devices" $ getStatuses (zip devices statuses)

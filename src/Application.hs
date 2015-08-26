@@ -1,4 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 ------------------------------------------------------------------------------
 -- | This module defines our application's state type and an alias for its
@@ -6,6 +7,7 @@
 module Application where
 
 ------------------------------------------------------------------------------
+import Control.Monad.State.Class (get)
 import Control.Lens
 import Snap.Snaplet
 import Snap.Snaplet.Heist
@@ -29,5 +31,5 @@ instance HasHeist App where
 ------------------------------------------------------------------------------
 type AppHandler = Handler App App
 
--- instance HasPostgres (Handler b App) where
---   getPostgresState = with db get
+instance HasPostgres (Handler b App) where
+  getPostgresState = with db get

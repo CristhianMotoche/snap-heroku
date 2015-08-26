@@ -37,7 +37,8 @@ Executable snap-heroku
     xmlhtml                   >= 0.1     && < 0.3,
     snaplet-postgresql-simple >= 0.6     && < 0.7,
     postgresql-simple         >= 0.4     && < 0.5,
-    snap-extras               >= 0.10    && < 1.0
+    snap-extras               >= 0.10    && < 1.0,
+    uuid                      >= 1.2     && < 1.4
 
   if flag(old-base)
     build-depends:
