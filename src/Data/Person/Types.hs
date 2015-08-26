@@ -8,12 +8,12 @@ import Control.Applicative ((<$>), (<*>))
 import Database.PostgreSQL.Simple.FromRow
 import Database.PostgreSQL.Simple.ToRow
 import Database.PostgreSQL.Simple.ToField
--- import Data.Aeson (ToJSON, FromJSON)
+import Data.Aeson (ToJSON, FromJSON)
 import GHC.Generics (Generic)
 import Data.UUID (UUID)
 ------------------------------------------------------------------------------
 
-data Person = Person { _id   :: UUID
+data Person = Person { _id   :: Int
                      , _name :: String
                      , _age  :: Int
                      } deriving (Show, Generic)
@@ -33,9 +33,9 @@ instance ToRow Person where
 instance ToField Person where
   toField Person{..} = toField _id
 
--- instance ToJSON Person
+instance ToJSON Person
 
--- instance FromJSON Person
+instance FromJSON Person
 
-setPersonId :: Person -> UUID -> Person
-setPersonId d _id = d{_id = _id}
+-- setPersonId :: Person -> UUID -> Person
+-- setPersonId d _id = d{_id = _id}

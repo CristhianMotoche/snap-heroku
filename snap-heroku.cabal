@@ -38,7 +38,8 @@ Executable snap-heroku
     snaplet-postgresql-simple >= 0.6     && < 0.7,
     postgresql-simple         >= 0.4     && < 0.5,
     snap-extras               >= 0.10    && < 1.0,
-    uuid                      >= 1.2     && < 1.4
+    uuid                      >= 1.2     && < 1.4,
+    blaze-builder
 
   if flag(old-base)
     build-depends:

@@ -25,7 +25,7 @@ import qualified Heist.Interpreted as I
 ------------------------------------------------------------------------------
 import           Application
 import           Web.Person.Person
-import           Web.Person.Internal.Handlers
+import           Web.Internal.Handlers
 ------------------------------------------------------------------------------
 
 -- | Render login form
